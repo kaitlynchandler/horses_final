@@ -1,0 +1,39 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add New Member</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+</head>
+<body>
+<div class="header">
+    <h2>Member Home Page</h2>
+</div>
+<div class="content">
+
+    <button class = "button" onclick="location.href='loginHomePage.php'">Home</button>
+
+    <form action="add_member_handler.php" method="post">
+    First Name: <input type="text" name="firstName"><br>
+    Last Name: <input type="text" name="lastName"><br>
+    E-mail: <input type="email" name="email"><br>
+    Date of Birth: <input type="text" name="dateOfBirth"><br>
+    Phone Number: <input type="text" name="phoneNumber"><br>
+    Street Address: <input type="text" name="streetAddress"><br>
+    City: <input type="text" name="city"><br>
+    Zipcode: <input type="text" name="zipcode"><br>
+
+    <input type="submit" name = "submit">
+    </form>
+
+    <p> <a href="loginHomePage.php?logout='1'" style="color: red;">logout</a> </p>
+
+</div>
+
+
+
+
+</body>
+</html>

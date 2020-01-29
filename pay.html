@@ -1,0 +1,290 @@
+<HTML>
+	<head>
+		<TITLE>Payment</TITLE>
+		<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+		<link href="images/capsha.css" rel="stylesheet" type="text/css">
+	</head>
+
+	<center>
+		<body bgcolor="#ffffff" text="#000000" link="#996633" vlink="#669966" alink="#FFFFFF">
+
+		<!-- Page Header -->
+			<table width="654" border="0" cellpadding="0" cellspacing="0" class="outline">
+			    <tbody><tr> 
+			      <td width="65" valign="top">
+					<img src="images/CHSA_GRASS.jpg" alt="CHSA Graphic" width="65" height="76"></td>
+			      <td valign="top" width="589" height="76">
+					<img src="images/cphsa_bar.jpg" alt="Horses in a field" width="589" height="76"></td>
+			    </tr>
+			<tr>    
+			<td colspan="2" valign="top"> <p align="center" class="category"><a name="top"></a>
+			<b>Step 2. Process Payment</b></p></td>
+			</tr>    
+
+			</tbody></table><br>
+
+			<!-- Main Body -->
+			<table width="655" border="0" cellpadding="0" cellspacing="0" class="outline"> 
+			<tbody><tr><td width="655">
+				<center>
+					<br><b>Your application has been submitted.</b><br><br>
+					To complete your membership application, please complete the transaction through the button below.<br><br>
+					<form name="_xclick" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+					<input type="hidden" name="cmd" value="_xclick">
+					<input type="hidden" name="business" value="webmaster@caphsa.org">
+					<input type="hidden" name="currency_code" value="USD">
+					<!-- <?php
+						include 'maintenance/server_variables.php';
+
+						$description = "CapHSA Membership - Member IDs:";
+						$email_for_al = date('Y-m-d')." ";
+						$price = 0;
+						$member_count = 0;
+						$horse_count = 0;
+						
+						// It seems all the automated requests we received would have a ZIP of '123456', so we're going to block this.
+						if($_POST["zip"] == "123456" || $_POST["phone"] == "123456")
+						{
+							echo "Your application has been rejected due to an invalid zip code or phone number.";
+							return;
+						}
+
+						// Calculate how many members are being registered
+						if (!empty($_POST["person1"])) $member_count++;
+						if (!empty($_POST["person2"])) $member_count++;
+						if (!empty($_POST["person3"])) $member_count++;
+						if (!empty($_POST["person4"])) $member_count++;
+						if (!empty($_POST["person5"])) $member_count++;
+						if (!empty($_POST["person6"])) $member_count++;
+
+						// Calculate how many horses are being registered
+						if (!empty($_POST["horse1"])) $horse_count++;
+						if (!empty($_POST["horse2"])) $horse_count++;
+						if (!empty($_POST["horse3"])) $horse_count++;
+						if (!empty($_POST["horse4"])) $horse_count++;
+
+						// Prepare and send email for Al and others of raw form data
+						if(!empty($_POST["phone"])) {$email_for_al .= "phone: " . $_POST["phone"] . "\n";}
+						else {$email_for_al .= "phone: None given" . "\n";}
+						if(!empty($_POST["mail"])) $email_for_al .= "email: " . $_POST["mail"] . "\n";
+						else $email_for_al .= "email:  None given" . "\n" ; 
+						if(!empty($_POST["street"])) $email_for_al .= "address: " . $_POST["street"] . "\n";
+						else $email_for_al .= "address: None given"  . "\n"; 
+						if(!empty($_POST["city"])) $email_for_al .= "city: " . $_POST["city"] . "\n";
+						else $email_for_al .= "city: None given" . "\n"; 
+						if(!empty($_POST["zip"])) $email_for_al .= "zip: " . $_POST["zip"] . "\n";
+						else $email_for_al .= "zip: None given" . "\n" ; 
+						if(!empty($_POST["trainer"])) $email_for_al .= "trainer: " . $_POST["trainer"] . "\n";
+						else $email_for_al .= "trainer: None given". "\n" ; 
+
+						// Members
+						$email_for_al .= "\nMembers:\n";
+						for($i = 0; $i < $member_count; $i++)
+						{
+							$email_for_al .= "name: " . $_POST["person" . ($i + 1)] . "\n";
+							if(!empty($_POST["DOB" . ($i + 1)])) {$email_for_al .= "dob: " . $_POST["DOB" . ($i + 1)] . "\n";}
+							else {$email_for_al .= "dob: None given" . "\n";}
+							$email_for_al .= "\n";
+						}
+						// Horses
+						$email_for_al .= "Horses:\n";
+						for($i = 0; $i < $horse_count; $i++)
+						{
+							$name = $_POST["horse" . ($i + 1)];
+							$height = $_POST["hands" . ($i + 1)] + 0;
+							$color = $_POST["color" . ($i + 1)];
+							$sex = "Unknown";
+							if(!empty($_POST["sex" . ($i + 1)])) $sex = $_POST["sex" . ($i + 1)];
+							$age = $_POST["age" . ($i + 1)]; 
+							$owner = $_POST["owner" . ($i + 1)];
+
+							$email_for_al .= "name: $name\n";
+							$email_for_al .= "height: $height\n";
+							$email_for_al .= "color: $color\n";
+							$email_for_al .= "sex: $sex\n";
+							$email_for_al .= "age: $age\n";
+							$email_for_al .= "owner: $owner\n";
+
+							$email_for_al .= "\n";
+
+							$age = date("Y") - $_POST["age" . ($i + 1)]; // age = current year - age
+						}
+						// Fininished preparing the email for Al and others, lets send it
+
+          				$mail_Subject = 'Member Registration Form Data';						
+			        	
+			            	$mail_To = "parkerlm@verizon.net";
+					$message ='Testing';
+			            	mail($mail_To, $mail_Subject, $message); 
+
+					$mail_To = "parkerlm@verizon.net";
+			            	mail($mail_To, $mail_Subject, $email_for_al); 
+
+					
+
+						// Open connection to MySQL database
+						mysql_connect($server,$username,$password);
+						@mysql_select_db($database) or die( "Unable to select database");
+
+				//Throw email message in temp table
+				//Later make proper table to hold all fields in appropriate spots
+
+				mysql_query ("INSERT INTO RegTemp(RegEmail) VALUES ('$email_for_al')");
+
+				//Starting to build proper table
+				$tempmail = $_POST["mail"];   // to go into Rider_email table
+
+				//Put email into it's table
+				//if (!empty($_POST["person1"])) 
+				  { $tempname = $_POST["person1"];
+				     mysql_query("INSERT INTO Rider_Email(MemberName, Email) VALUES ('$tempname','$tempmail')");
+				   }
+
+				mysql_query("INSERT INTO RegTempDate(MemDate,email,rest) VALUES (CURDATE(),  '$tempmail', '$email_for_al')");
+
+						// Add members to respective tables
+						if($_POST["Mtype"] != "Horses")
+						{
+							// Get address and zip from POST
+							$address = $_POST["street"];
+							$zip = $_POST["zip"];
+							$city = $_POST["city"];
+
+							// Iterate though members from POST
+							for($i = 0; $i < $member_count; $i++)
+							{
+								$name = $_POST["person" . ($i + 1)];
+								$dob = "1900-01-01";
+								
+								// Check if person already exists
+								$result = mysql_query("SELECT COUNT(*), Participant_ID FROM Participant, Rider_info WHERE Participant_Name = '$name' AND Participant_ID = Rider_ID GROUP BY Participant_ID");
+
+								// Initialize id
+								$id = -1;
+
+								// Check if person already exists, if not, insert entry to database.  If already exists, we'll update them in the PayPal handler
+								if(mysql_affected_rows() == 0)
+								{
+									// Insert to participant tables
+									mysql_query("INSERT INTO Participant(Participant_Name,Participant_is_Horse) VALUES ('$name','FALSE')");
+									// Get participant ID
+									$id = mysql_insert_id();
+									
+									// Check if DOB isn't empty, update DOB if not empty
+									if(!empty($_POST["DOB" . ($i + 1)])) $dob = $_POST["DOB" . ($i + 1)];
+								
+									// Insert to rider info table
+									mysql_query("INSERT INTO Rider_info(Rider_ID,Rider_is_Member,Rider_DOB,Rider_Address,Rider_City,Rider_Zip) VALUES ('$id','PENDING','$dob', '$address', '$city', '$zip')");
+									// Insert to rider member table
+									mysql_query("INSERT INTO Rider_Member(Rider_ID,RMember_Date) VALUES ('$id',CURDATE())");
+								}
+								else 
+								{
+									$id = mysql_result($result, 0, 1);
+									// Update whatever if we need to update participants in future
+								}
+								$description .= "$id ";
+							}
+						}
+						else $member_count = 0;
+
+						// Seperate member IDs in description from horse IDs
+						$description .= "|";
+
+						// Add horses to respective tables
+						for($i = 0; $i < $horse_count; $i++)
+						{
+							// Retrieve all attributes of horse
+							$name = $_POST["horse" . ($i + 1)];
+							$height = $_POST["hands" . ($i + 1)] + 0;
+							$color = $_POST["color" . ($i + 1)];
+							$sex = $_POST["sex" . ($i + 1)];
+							$age = date("Y") - $_POST["age" . ($i + 1)]; // age = current year - age
+							$owner = $_POST["owner" . ($i + 1)];
+
+							// Prepare for height calculations
+							$type = "default_placeholder";
+
+							// Calculate type based on height
+							if(is_float($height))
+							{
+								if($height >= 14.2) $type = "H";
+								else if($height >= 13.2) $type = "LP";
+								else if($height >= 12.2) $type = "MP";
+								else if($height == 0) $type = "H"; // Default incase height field was blank
+								else $type = "SP";
+							}
+							
+							// Check if horse already exists with owner and name
+							$result = mysql_query("SELECT COUNT(*), Horse_ID FROM Horse_info WHERE Horse_Owner = '$owner' AND Horse_Name = '$name' GROUP BY Horse_ID");
+
+							// Initialize id
+							$id = -1;
+
+							// Check if horse already exists, if not, insert entry to database.  If horse already exists, we'll update them in the PayPal handler
+							if(mysql_affected_rows() == 0)
+							{
+								// Insert to participant tables
+								mysql_query("INSERT INTO Participant(Participant_Name,Participant_is_Horse) VALUES ('$name','TRUE')");
+								// Get participant ID
+								$id = mysql_insert_id();
+								// Insert to horse info table
+								mysql_query("INSERT INTO Horse_info(Horse_ID,Horse_Owner,Horse_YOB,Horse_Type,Horse_is_Member,Horse_Name,Horse_Color) VALUES ('$id','$owner','$age','$type','PENDING','$name','$color')");
+								// Insert to horse member table
+								mysql_query("INSERT INTO Horse_Member(Horse_ID,Hmember_Date) VALUES ('$id',CURDATE())");
+							}			
+							else 
+							{
+								// Update horse height and other attributes
+								$id = mysql_result($result, 0, 1);
+								mysql_query("UPDATE Horse_info SET Horse_Height = '$height' WHERE Horse_ID = '$id'");
+								mysql_query("UPDATE Horse_Member SET Hmember_Date = CURDATE() WHERE Horse_ID = '$id'");
+							}		
+
+							// Add horse ID (if something didn't go wrong above) to payment description so IP handler knows who to move from pending.
+							if($id >= 0) $description .= "$id ";
+						}
+
+						// Close connection to MySQL database
+						mysql_close();
+
+						// Calculate price
+						// $20 - Individual
+						// $40 - Family
+						// $10  - Horse 
+						if ($_POST["Mtype"] == "Family") $price += 40;
+			    		else if($_POST["Mtype"] == "Individuals") $price += (20 * $member_count);
+			    		$price += (10 * $horse_count);
+
+			    		echo "You are paying for a " . $_POST["Mtype"] . " membership with $member_count members and $horse_count horses.<br><br>";
+
+						// Add attributes to PayPal button
+						echo "<input type=\"hidden\" name=\"item_name\" value=\"$description\">";
+						echo "<input type=\"hidden\" name=\"amount\" value=\"$price\">";
+
+						// Display price
+						echo "Price: $$price.00<br>";
+					?> -->
+					<input type="image" src="http://www.paypalobjects.com/en_US/i/btn/btn_paynow_LG.gif" border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!">
+					</form>
+				</center>
+			</td></tr></tbody></table><br>
+
+			<!-- Page Footer -->
+			<table width="654">
+				<tbody><tr> 
+			      <td colspan="2" valign="top"> <div align="center"> 
+			          <p align="right"><font face="Arial, Helvetica, sans-serif" size="1">
+						<img src="images/riders.gif" alt="Jockeys racing" width="128" height="32"></font></p>
+			          <br>   
+						<span class="LowNav">Comment or questions contact the <a href="mailto:webmaster@caphsa.org" class="LowNav">CHSA
+			            webmaster</a>.</span> 
+						<font face="Arial, Helvetica, sans-serif" color="#999999" size="1"><br>
+						Copyright ©2003-2005 Capital Horse Shows Association. All rights reserved. </font><p></p>
+			        </div></td>
+			  </tr></tbody>
+			</table>
+
+		</body>
+	</center>
+</HTML>

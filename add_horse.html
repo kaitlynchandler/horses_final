@@ -1,0 +1,45 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add New Horse</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+</head>
+<body>
+<div class="header">
+    <h2>Member Home Page</h2>
+</div>
+<div class="content">
+
+    <button class = "button" onclick="location.href='loginHomePage.php'">Home</button>
+
+    <form action="add_horse_handler.php" method="post">
+        Horse Name: <input type="text" name="horseName"><br>
+        Horse Height: <input type="text" name="horseHeight"><br>
+        Horse Color: <input type = "text" name="horseColor"><br>
+        Horse Owner: <input type = "text" name="horseOwner"><br>
+        Horse Size: <input type = "text" name="horseSize"> <br>
+        Horse Type: 
+        <select name = 'horseType'>
+        <option value="H">H</option>
+        <option value="SP">SP</option>
+        <option value="MP">MP</option>
+        <option value="LP">LP</option>
+        </select><br>
+        Horse Year of Birth: <input type="number" name="horseYOB"><br>
+
+    <input type="submit" name = "submit">
+    </form>
+
+    <p> <a href="loginHomePage.php?logout='1'" style="color: red;">logout</a> </p>
+
+</div>
+
+
+
+
+</body>
+</html>
